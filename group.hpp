@@ -32,10 +32,12 @@ public:
 
   /* If node is a leaf */
   string s;
+  group *leaf;
 
-  group(string _s):s(_s), height(0), left(NULL),right(NULL), left_weight(0), right_weight(0){
+  group(string _s):height(0), left(NULL),right(NULL), left_weight(0), right_weight(0),leafs(vector<group *>()),s(_s),leaf(NULL){
     is_leaf=true;
     leafs.push_back(this);
+    //cout<<leafs[0]->s<<endl;
     group_id=global_count++;
   }
 
@@ -49,16 +51,21 @@ public:
     right_weight=height-right->height;
     
     //Populate list of leafs contained in tree
-    for(int i = 0; i < left->leafs.size(); i++){
+    for(uint i = 0; i < left->leafs.size(); i++){
       leafs.push_back(left->leafs[i]);
     }
 
-    for(int i = 0; i < right->leafs.size(); i++){
+    for(uint i = 0; i < right->leafs.size(); i++){
       leafs.push_back(right->leafs[i]);
     }
-
   }
+
+  //group& operator=(const group &r) const{
+    
+  //}
+
 };
+
 
 /* Initialize the global count of groups to zero */
 int group::global_count=0;
