@@ -22,7 +22,7 @@ public:
   /* Iterates over merge() until there is only one group */
   void makeTree(){
     while(g.groups.size()!=1){
-      cout<<g.groups.size()<<endl;
+      //cout<<g.groups.size()<<endl;
       merge();
     }
   }
@@ -42,12 +42,27 @@ public:
     }
 
     /* Find closest groups */
-    vector<group>::iterator loc1 = g.groups.begin();
-    vector<group>::iterator loc2 = g.groups.begin(); loc2++;
+    vector<group *>::iterator loc1 = g.groups.begin();
+    vector<group *>::iterator loc2 = g.groups.begin();
+    loc2++;
+    /*for(int i = 0; i < (&(*loc1))->leafs.size();i++){
+      cout<<(&(*loc1))->leafs[i]->group_id<<endl;
+    }
+    cout<<endl;
+    for(int i = 0; i < (&(*loc2))->leafs.size();i++){
+      cout<<(&(*loc2))->leafs[i]->group_id<<endl;
+    }
+
+    exit(0);*/
+
     double min=g.groupDistance(*loc1,*loc2);
-    for(vector<group>::iterator i=g.groups.begin(); i!=g.groups.end(); i++){
-      for(vector<group>::iterator j=i; j!=g.groups.end(); j++){
-	j++; if(j==g.groups.end()) continue;
+    //cout<<min<<endl;
+    //exit(0);
+    for(vector<group *>::iterator i=g.groups.begin(); i!=g.groups.end(); i++){
+      for(vector<group *>::iterator j=i; j!=g.groups.end(); j++){
+	if(i==j) continue;
+	//cout<<(*i)->group_id<<" "<<(*j)->group_id<<endl;
+	continue;
 	double tmp=g.groupDistance(*i,*j);
 	if(tmp<min){
 	  loc1=i; loc2=j; min=tmp;
@@ -56,7 +71,7 @@ public:
     }
 
     /* Make new group composed of old groups */
-    group new_group(&(*loc1),&(*loc2), min/2);
+    group *new_group= new group(*loc1,*loc2, min/2);
 
     /* Erase old groups */
     g.groups.erase(loc2);
@@ -64,12 +79,29 @@ public:
     
     /* Generate new weights for the new group */
     for(uint i = 0; i < g.groups.size(); i++){
-      pair<group, group> tmp(new_group, g.groups[i]);
+      pair<group *, group *> tmp(new_group, g.groups[i]);
       g.weight_pool[tmp] = g.groupDistance(new_group, g.groups[i]);
     }
 
     /* Add new group to groups vector */
     g.groups.push_back(new_group);
+  }
+
+  void printTree(){
+    printTreeRec(g.groups[0]);
+  }
+
+  int printTreeRec(group *gr){
+    if(gr->is_leaf==true){
+      cout<<gr->s<<"-------"<<endl;
+      return 1;
+    }
+    int l=printTreeRec(gr->left);
+    for(int i = 0; i < l;i++)
+      cout<<"\t";
+    cout<<"intern-----"<<endl;
+    printTreeRec(gr->right);
+    return l+1;
   }
 
 };

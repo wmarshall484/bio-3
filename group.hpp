@@ -32,9 +32,17 @@ public:
 
   /* If node is a leaf */
   string s;
-  group *leaf;
+  //group *leaf;
 
-  group(string _s):height(0), left(NULL),right(NULL), left_weight(0), right_weight(0),leafs(vector<group *>()),s(_s),leaf(NULL){
+  group(){
+  }
+
+  group(string _s){
+    s=_s;
+    height=0;
+    left=NULL; right=NULL;
+    left_weight=0; right_weight=0;
+    leafs=vector<group *>();
     is_leaf=true;
     leafs.push_back(this);
     //cout<<leafs[0]->s<<endl;
@@ -73,10 +81,10 @@ int group::global_count=0;
 /* struct that contains operator that can compare std::pairs of groups */
 
 struct pairGroupComp{
-  bool operator()(const pair<group, group> &pg1, const pair<group, group> &pg2) const {
+  bool operator()(const pair<group *, group *> &pg1, const pair<group *, group *> &pg2) const {
     stringstream ss1, ss2;
-    ss1<<pg1.first.group_id<<pg1.second.group_id;
-    ss2<<pg2.first.group_id<<pg2.second.group_id;
+    ss1<<pg1.first->group_id<<pg1.second->group_id;
+    ss2<<pg2.first->group_id<<pg2.second->group_id;
     return ss1.str()<ss2.str();
   }
 };

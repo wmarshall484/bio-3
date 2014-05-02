@@ -18,17 +18,17 @@ using namespace std;
 class grid{
 public:
   string infile;
-  vector<group> groups;
-  map<pair<group, group>, double, pairGroupComp> weight_pool;
+  vector<group *> groups;
+  map<pair<group *, group *>, double, pairGroupComp> weight_pool;
 
   grid(string _infile):infile(_infile){
     parse(infile);
-    for(int i = 0; i < groups.size()-1;i++){
+    //for(int i = 0; i < groups.size()-1;i++){
       //group g=*(groups[i].leafs[0]);
       //pair<group,group> gp(*(groups[i].leafs[0]), *(groups[i+1].leafs[0]));
       //cout<<gp.first.s<<endl;
-      cout<<g.s<<endl;
-    }
+      //cout<<g.s<<endl;
+    //}
   }
   
   void setAndParse(string _infile){
@@ -39,15 +39,24 @@ public:
   }
 
   /* Returns the distance between two groups */
-  double groupDistance(group g1, group g2){
+  double groupDistance(group *g1, group *g2){
+    /*for(int i = 0; i < g1->leafs.size();i++){
+      cout<<g1->leafs[i]->group_id<<endl;
+    }
+    cout<<endl;
+
+    for(int i = 0; i < g2->leafs.size();i++){
+      cout<<g2->leafs[i]->group_id<<endl;
+    }
+    exit(0);*/
     //cout<<"Got here"<<endl<<flush;
-    int n = g1.leafs.size()+g2.leafs.size();
+    int n = g1->leafs.size()+g2->leafs.size();
     double total_distance=0;
-    for(vector<group *>::iterator i=g1.leafs.begin(); i!=g1.leafs.end();i++){
-      for(vector<group *>::iterator j=g2.leafs.begin(); j!=g2.leafs.end();j++){
-	pair<group, group> gp(**i,**j);
+    for(vector<group *>::iterator i=g1->leafs.begin(); i!=g1->leafs.end();i++){
+      for(vector<group *>::iterator j=g2->leafs.begin(); j!=g2->leafs.end();j++){
+	pair<group*, group*> gp(*i,*j);
 	if(weight_pool.find(gp)==weight_pool.end()){
-	  cout<<"Could not find entry for groups "<<gp.first.group_id<<" "<<gp.second.group_id<<endl;
+	  cout<<"Could not find entry for groups "<<gp.first->group_id<<" "<<gp.second->group_id<<endl;
 	  exit(0);
 	}
 	//cout<<"Got here"<<endl<<flush;
@@ -62,7 +71,7 @@ public:
     for(uint i = 0; i < groups.size()-1;i++){
       //cout<<groups[i].s<<" "<<endl<<flush;
       for(uint j = i+1; j < groups.size();j++){
-	pair<group, group> gp(*(groups[i].leafs[0]), *(groups[j].leafs[0]));
+	pair<group *, group *> gp(groups[i]->leafs[0], groups[j]->leafs[0]);
 	cout<<weight_pool[gp]<<" ";
       }
       cout<<endl;
@@ -111,17 +120,19 @@ private:
     /* Turn line IDs into groups and put them in a vector, preserving
        line-order */
     for(uint i = 0; i < lines.size();i++){
-      groups.push_back(group(lines[i].first));
+      groups.push_back(new group(lines[i].first));
     }
 
     /* Ensure that the weight in the i-th j-th position are what the
        i-th j-th and j-th i-th group map to */
     for(uint i = 0; i < lines.size(); i++){
       for(uint j = 0; j < lines[i].second.size(); j++){
-	pair<group, group> gp_tmp(groups[i], groups[j]);
-	pair<group, group> gp_tmp2(groups[j], groups[i]);
+	pair<group *, group *> gp_tmp(groups[i], groups[j]);
+	pair<group *, group *> gp_tmp2(groups[j], groups[i]);
 	weight_pool[gp_tmp] = lines[i].second[j];
 	weight_pool[gp_tmp2] = lines[i].second[j];
+	//cout<<"Just added "<<groups[i]->group_id<<" "<<groups[j]->group_id<<" ";
+	//cout<<"value is: "<<weight_pool[gp_tmp]<<endl;
       }
     }
   }
