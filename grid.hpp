@@ -40,7 +40,7 @@ public:
 
   /* Returns the distance between two groups */
   double groupDistance(group *g1, group *g2){
-    int n = g1->leafs.size()+g2->leafs.size();
+    int n = g1->leafs.size()*g2->leafs.size();
     double total_distance=0;
     for(vector<group *>::iterator i=g1->leafs.begin(); i!=g1->leafs.end();i++){
       for(vector<group *>::iterator j=g2->leafs.begin(); j!=g2->leafs.end();j++){
@@ -53,14 +53,15 @@ public:
 	total_distance+=weight_pool[gp];
       }
     }
-    return total_distance/(double)n;
+    return total_distance/(double)(n);
   }
 
   /* This function returns the value for the M(ij) function for two
      groups */
  
   double groupDistanceNJ(group *g1, group *g2){
-    return weight_pool[pair<group *,group *>(g1,g2)]-((g1->height+g2->height)/2);
+    double dij=weight_pool[pair<group *,group *>(g1,g2)];
+    return dij-((g1->height+g2->height)/(groups.size()-2));
   }
 
   /* Prints IDs and weight matrix */

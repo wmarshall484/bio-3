@@ -61,18 +61,19 @@ public:
     //exit(0);
     int count =0;
     for(vector<group *>::iterator i=g.groups.begin(); i!=g.groups.end(); i++){
-      for(vector<group *>::iterator j=i; j!=g.groups.end(); j++){
-	if(i==j) continue;
-	//cout<<"Tried "<<count++<<" times"<<endl;
-	//cout<<(*i)->group_id<<" "<<(*j)->group_id<<endl;
-	//continue;
+      for(vector<group *>::iterator j=g.groups.begin(); j!=g.groups.end(); j++){
+	if(i==j){
+	  //cout<<"0\t";
+	  continue;
+	}
 	double tmp=g.groupDistanceNJ(*i,*j);
+	//cout<<tmp<<"\t";
 	//cout<<tmp<<" "<<min<<endl;
 	if(tmp<min){
-	  //cout<<"Locs changed"<<endl;
 	  loc1=i; loc2=j; min=tmp;
 	}
       }
+      //cout<<endl;
     }
 
     /* Make new group composed of old groups */

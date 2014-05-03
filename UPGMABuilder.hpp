@@ -56,6 +56,7 @@ public:
     exit(0);*/
 
     double min=g.groupDistance(*loc1,*loc2);
+    
     //cout<<min<<endl;
     //exit(0);
     for(vector<group *>::iterator i=g.groups.begin(); i!=g.groups.end(); i++){
@@ -88,6 +89,8 @@ public:
 
     /* Add new group to groups vector */
     g.groups.push_back(new_group);
+    //printTreeRec(new_group);
+    //cout<<"-------------------------------------------------"<<endl;
   }
 
   void printTree(){
@@ -102,7 +105,7 @@ public:
     int l=printTreeRec(gr->left);
     for(int i = 0; i < l;i++)
       cout<<"\t";
-    cout<<"intern id="<<gr->group_id<<" l="<<gr->left->group_id<<" r="<<gr->right->group_id<<endl;
+    cout<<"intern id="<<gr->group_id<<" l="<<gr->left->group_id<<" r="<<gr->right->group_id<<" lw="<<gr->left_weight<<" rw="<<gr->right_weight<<" h="<<gr->height<<endl;
     printTreeRec(gr->right);
     return l+1;
   }
