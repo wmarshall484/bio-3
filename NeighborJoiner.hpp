@@ -108,8 +108,8 @@ public:
 
     /* Add new group to groups vector */
     g.groups.push_back(new_group);
-    printTreeRec(new_group);
-    cout<<"-------------------------------------------------"<<endl;
+    //printTreeRec(new_group);
+    //cout<<"-------------------------------------------------"<<endl;
   }
 
   void printTree(){
@@ -128,7 +128,7 @@ public:
     for(int i = 0; i < l;i++)
       cout<<"\t";
     //cout<<"intern l="<<gr->left_weight<<" r="<<gr->right_weight<<endl;
-    cout<<"intern id="<<gr->group_id<<" l="<<gr->left->group_id<<" r="<<gr->right->group_id<<" l="<<gr->left_weight<<" r="<<gr->right_weight;
+    cout<<"intern id="<<gr->group_id<<" l="<<gr->left->group_id<<" r="<<gr->right->group_id<<" lw="<<gr->left_weight<<" rw="<<gr->right_weight;
     if(gr->left_weight<0||gr->right_weight<0)
       cout<<"*";
     cout<<endl;

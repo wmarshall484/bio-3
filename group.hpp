@@ -50,7 +50,7 @@ public:
   }
 
   group(group *g1, group *g2, double _height):left(g1), right(g2){
-    cout<<"Making group dist/2 is "<<_height<<endl;
+    //cout<<"Making group dist/2 is "<<_height<<endl;
     group_id=global_count++;
     is_leaf=false;
     height=_height;
