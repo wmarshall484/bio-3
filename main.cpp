@@ -1,17 +1,23 @@
 #include <iostream>
 #include "UPGMABuilder.hpp"
+#include "NeighborJoiner.hpp"
 
 using namespace std;
 
 
 int main(){
-  UPGMABuilder u("infile.grid");
+  NeighborJoiner n("testfile.grid");
   //u.g.print();
+  cout<<n.g.groups.size()<<endl;
+  n.makeTree();
+  cout<<n.g.groups.size()<<endl;
+  n.printTree();
+
+  /*UPGMABuilder u("infile.grid");
+  //u.g.print();
+  cout<<u.g.groups.size()<<endl;
   u.makeTree();
   cout<<u.g.groups.size()<<endl;
-  //for(int i = 0; i < u.g.groups[0]->leafs.size();i++){
-  //  cout<<u.g.groups[0]->leafs[i]->group_id<<endl;
-  //}
-  u.printTree();
+  u.printTree();*/
   return 0;
 }

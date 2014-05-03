@@ -62,7 +62,7 @@ public:
       for(vector<group *>::iterator j=i; j!=g.groups.end(); j++){
 	if(i==j) continue;
 	//cout<<(*i)->group_id<<" "<<(*j)->group_id<<endl;
-	continue;
+	//continue;
 	double tmp=g.groupDistance(*i,*j);
 	if(tmp<min){
 	  loc1=i; loc2=j; min=tmp;
@@ -80,7 +80,10 @@ public:
     /* Generate new weights for the new group */
     for(uint i = 0; i < g.groups.size(); i++){
       pair<group *, group *> tmp(new_group, g.groups[i]);
-      g.weight_pool[tmp] = g.groupDistance(new_group, g.groups[i]);
+      pair<group *, group *> tmp2(g.groups[i], new_group);
+      double gd=g.groupDistance(new_group, g.groups[i]);
+      g.weight_pool[tmp] = gd;
+      g.weight_pool[tmp2]= gd;
     }
 
     /* Add new group to groups vector */
@@ -93,13 +96,13 @@ public:
 
   int printTreeRec(group *gr){
     if(gr->is_leaf==true){
-      cout<<gr->s<<"-------"<<endl;
+      cout<<gr->s<<" id="<<gr->group_id<<endl;
       return 1;
     }
     int l=printTreeRec(gr->left);
     for(int i = 0; i < l;i++)
       cout<<"\t";
-    cout<<"intern-----"<<endl;
+    cout<<"intern id="<<gr->group_id<<" l="<<gr->left->group_id<<" r="<<gr->right->group_id<<endl;
     printTreeRec(gr->right);
     return l+1;
   }
